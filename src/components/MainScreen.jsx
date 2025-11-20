@@ -47,7 +47,7 @@ export default function MainScreen({ solvePuzzle, solved, solvedTrigger }) {
             ></input>
             {config.hint && (
               <>
-                <p onClick={() => setShowHint(true)} className="forgotPIN">
+                <p onClick={() => showHint ? setShowHint(false) : setShowHint(true)} className="forgotPIN">
                   {I18n.getTrans("i.pass")}
                 </p>
                 <p className="hint" style={{ visibility: showHint ? "" : "hidden" }}>
@@ -58,7 +58,7 @@ export default function MainScreen({ solvePuzzle, solved, solvedTrigger }) {
           </>
         ) : (
           <>
-            <div> {I18n.getTrans("i.wrongPass")}</div>
+            <p className="wrongPassFeedback"> {I18n.getTrans("i.wrongPass")}</p>
             <button className="ok-button" onClick={() => setFail(false)}>
               {I18n.getTrans("i.ok")}
             </button>

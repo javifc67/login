@@ -9,13 +9,13 @@ div.frame {
 }
 .ok-button {
   margin-top: 40px;
-  width: "125px";
-  background-color: #1a2bff1f;
+  width: 125px;
+  background-color: #a8b7ff55;
   border: 2px solid white;
   color: white;
   padding: 10px 30px;
-  border-radius: 10px;
-  font-size: 18px;
+  border-radius: 8px;
+  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   outline: none;
@@ -23,4 +23,14 @@ div.frame {
 
 .ok-button:hover {
   opacity: 0.85;
+}
+
+.hint {
+  font-size: 14px;
+  border-radius: 4px;
+  background-color: #ffffff1e;
+  padding: 4px 16px;
+  border: rgba(255, 255, 255, 0.352) 1px solid;
+  margin:0;
+  color: rgb(179, 181, 196);
 }

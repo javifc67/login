@@ -86,15 +86,16 @@ button:focus-visible {
 .containerLogin {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
+  height: 26rem;
 }
 
 /*IMG AVATAR*/
 .imgAvatar {
   border-radius: 100px;
   background-color: #a1a1a1;
-  height: 160px;
+  height: 140px;
   aspect-ratio: 1/1;
   background-size: cover;
 }
@@ -103,7 +104,7 @@ button:focus-visible {
 /* From Uiverse.io by alexruix */
 .input {
   width: 290px;
-  background-color: #414141a3;
+  background-color: #000000a3;
   color: #e7e7e7;
   padding: 0.15rem 0.5rem;
   min-height: 40px;
@@ -126,6 +127,10 @@ button:focus-visible {
 .forgotPIN {
   margin-top: 2rem;
   font-size: 0.9rem;
+}
+.forgotPIN:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 /*FOOTER*/
