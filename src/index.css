@@ -139,6 +139,9 @@ button:focus-visible {
   right: 12px;
   bottom: 12px;
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
   margin: 0.8rem 1.25rem;
+}
+.icon {
+  height: 1.5rem
 }

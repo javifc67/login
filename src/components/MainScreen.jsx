@@ -1,7 +1,7 @@
 import "./../assets/scss/MainScreen.scss";
-import { Power } from 'lucide-react';
-import { Wifi } from 'lucide-react';
-import { PersonStanding } from 'lucide-react';
+// import { Power } from 'lucide-react';
+// import { Wifi } from 'lucide-react';
+// import { PersonStanding } from 'lucide-react';
 
 import { useEffect, useState } from "react";
 import { useContext } from "react";
@@ -69,9 +69,9 @@ export default function MainScreen({ solvePuzzle, solved, solvedTrigger }) {
       </div>
 
       <div className="footer">
-        <Wifi sx={{ fontSize: 20 }} />
-        <PersonStanding sx={{ fontSize: 20 }} /> 
-        <Power sx={{ fontSize: 20 }} />
+        <img className="icon" src="./images/wifi-icon.svg"></img>
+        <img className="icon" src="./images/accesibility-icon.svg"></img>
+        <img className="icon" src="./images/power-icon.svg"></img>
       </div>
     </div>
   );
