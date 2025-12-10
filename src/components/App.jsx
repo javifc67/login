@@ -123,6 +123,8 @@ export default function App() {
     // Merge _appSettings with DEFAULT_APP_SETTINGS_SKIN to obtain final app settings
     _appSettings = Utils.deepMerge(DEFAULT_APP_SETTINGS_SKIN, _appSettings);
 
+    _appSettings.usernameRequired = _appSettings.usernameRequired === true || _appSettings.usernameRequired === "TRUE";
+
     //Init internacionalization module
     I18n.init(_appSettings);
 

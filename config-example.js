@@ -7,7 +7,8 @@ export let ESCAPP_APP_SETTINGS = {
   // avatarImg: "/images/Profile_avatar_placeholder_large.png", //Specify the avatar image URL
   hint: "Enter your PIN to access the system", //Specify a hint message to be displayed
   // endScreenVideo: "", //Specify a video URL to be played in the end screen
-
+  usernameRequired: "TRUE", // user can set the user name
+  passwordPlaceholder: "set your password here", //Specify the password placeholder displayed
   //Settings that will be automatically specified by the Escapp server
   locale: "es",
 

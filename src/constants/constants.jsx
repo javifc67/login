@@ -4,6 +4,8 @@ export const DEFAULT_APP_SETTINGS = {
   userName: "User Name",
   backgroundImg: "/images/bg-screen.png",
   endScreenVideo: "/videos/loading.mp4",
+  usernameRequired: "FALSE",
+  passwordPlaceholder: "Password",
 };
 
 export const THEMES = {
