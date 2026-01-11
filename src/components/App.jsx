@@ -4,18 +4,17 @@ import "./../assets/scss/app.scss";
 import {
   ACTION_AFTER_SOLVE,
   DEFAULT_APP_SETTINGS,
-  END_SCREEN,
   ESCAPP_CLIENT_SETTINGS,
   MAIN_SCREEN,
   THEME_ASSETS,
   WEB_SCREEN,
+  VIDEO_SCREEN,
 } from "../constants/constants.jsx";
 import { GlobalContext } from "./GlobalContext.jsx";
 import MainScreen from "./MainScreen.jsx";
 
 export default function App() {
-  const { escapp, setEscapp, appSettings, setAppSettings, Storage, setStorage, Utils, I18n } =
-    useContext(GlobalContext);
+  const { escapp, setEscapp, appSettings, setAppSettings, Storage, setStorage, Utils, I18n } = useContext(GlobalContext);
   const hasExecutedEscappValidation = useRef(false);
 
   const [loading, setLoading] = useState(true);
@@ -84,38 +83,61 @@ export default function App() {
 
   useEffect(() => {
     if (screen !== prevScreen.current) {
-      Utils.log("Screen ha cambiado de", prevScreen.current, "a", screen);
+      Utils.log("Screen has changed from", prevScreen.current, "to", screen);
       prevScreen.current = screen;
     }
   }, [screen]);
 
   function restoreAppState(erState) {
     Utils.log("Restore application state based on escape room state:", erState);
-
+    if (escapp.getAllPuzzlesSolved() && (escapp.getSolvedPuzzles().length > 0)){
+      if (appSettings.actionAfterSolve === ACTION_AFTER_SOLVE.SHOW_WEB) {
+        setSolved(true);
+        setScreen(WEB_SCREEN);
+      }
+    }
   }
 
   function processAppSettings(_appSettings) {
     if (typeof _appSettings !== "object") {
       _appSettings = {};
     }
+    _appSettings.usernameRequired = (_appSettings.usernameRequired === true || _appSettings.usernameRequired === "TRUE");
     if (typeof _appSettings.skin === "undefined" && typeof DEFAULT_APP_SETTINGS.skin === "string") {
       _appSettings.skin = DEFAULT_APP_SETTINGS.skin;
     }
 
     let skinSettings = THEME_ASSETS[_appSettings.skin] || {};
-
     let DEFAULT_APP_SETTINGS_SKIN = Utils.deepMerge(DEFAULT_APP_SETTINGS, skinSettings);
 
     // Merge _appSettings with DEFAULT_APP_SETTINGS_SKIN to obtain final app settings
     _appSettings = Utils.deepMerge(DEFAULT_APP_SETTINGS_SKIN, _appSettings);
-
-    _appSettings.usernameRequired = _appSettings.usernameRequired === true || _appSettings.usernameRequired === "TRUE";
-
+    
     //Init internacionalization module
     I18n.init(_appSettings);
 
-    if (typeof _appSettings.message !== "string") {
-      _appSettings.message = I18n.getTrans("i.message");
+    if (typeof _appSettings.userName !== "string") {
+      if(_appSettings.usernameRequired === false){
+        _appSettings.userName = I18n.getTrans("i.username_default");
+      } else {
+        _appSettings.userName = "";
+      }
+    }
+    if (typeof _appSettings.passwordPlaceholder !== "string") {
+      _appSettings.passwordPlaceholder = I18n.getTrans("i.password_placeholder");
+    }
+
+    //Check actions
+    if (_appSettings.actionAfterSolve === ACTION_AFTER_SOLVE.SHOW_VIDEO) {
+      if (typeof _appSettings.videoURL !== "string") {
+        _appSettings.actionAfterSolve = "NONE";
+      } else {
+        Utils.preloadVideos([_appSettings.videoURL]);
+      }
+    }
+
+    if ((_appSettings.actionAfterSolve === ACTION_AFTER_SOLVE.SHOW_WEB) && (typeof _appSettings.webURL !== "string")) {
+      _appSettings.actionAfterSolve = "NONE";
     }
 
     //Change HTTP protocol to HTTPs in URLs if necessary
@@ -131,7 +153,6 @@ export default function App() {
 
   function solvePuzzle(_solution) {
     Utils.log("solution: ", _solution);
-
     return checkResult(_solution);
   }
 
@@ -140,22 +161,27 @@ export default function App() {
       Utils.log("Check solution Escapp response", success, erState);
       if (success) {
         setSolved(true);
-        if (appSettings.actionAfterSolve === ACTION_AFTER_SOLVE.WEB) {
+        if (appSettings.actionAfterSolve === ACTION_AFTER_SOLVE.NONE) {
+          submitPuzzleSolution(_solution);
+        } else if (appSettings.actionAfterSolve === ACTION_AFTER_SOLVE.SHOW_WEB) {
           setScreen(WEB_SCREEN);
-        } else if (appSettings.actionAfterSolve === ACTION_AFTER_SOLVE.VIDEO) {
-          setScreen(END_SCREEN);
+          submitPuzzleSolution(_solution);
+        } else if (appSettings.actionAfterSolve === ACTION_AFTER_SOLVE.SHOW_VIDEO) {
+          setScreen(VIDEO_SCREEN);
+          setTimeout(function(){
+            let video = document.getElementById("video");
+            video.play();
+            video.addEventListener("ended", () => {
+              submitPuzzleSolution(_solution);
+            });
+          },0);
         }
-        try {
-          setTimeout(() => {
-            submitPuzzleSolution(_solution);
-          }, 2000);
-        } catch (e) {
-          Utils.log("Error in checkNextPuzzle", e);
-        }
+      } else {
+        setSolvedTrigger((prev) => prev + 1);
       }
-      setSolvedTrigger((prev) => prev + 1);
     });
   }
+
   function submitPuzzleSolution(_solution) {
     Utils.log("Submit puzzle solution", _solution);
     escapp.submitNextPuzzle(_solution, {}, (success, erState) => {
@@ -194,17 +220,14 @@ export default function App() {
       ),
     },
     {
-      id: END_SCREEN,
+      id: VIDEO_SCREEN,
       content: (
         <video
-          src={appSettings?.endScreenVideo}
-          autoPlay
-          loop
-          muted
+          id="video"
+          src={appSettings?.videoURL}
           style={{
             width: "100%",
             height: "100%",
-            objectFit: "cover",
           }}
         />
       ),
@@ -213,7 +236,7 @@ export default function App() {
       id: WEB_SCREEN,
       content: (
         <iframe
-          src={appSettings?.webUrl}
+          src={appSettings?.webURL}
           style={{
             width: "100%",
             height: "100%",

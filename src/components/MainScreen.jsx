@@ -8,25 +8,33 @@ import { useContext } from "react";
 import { GlobalContext } from "./GlobalContext.jsx";
 
 export default function MainScreen({ solvePuzzle, solved, solvedTrigger }) {
+  const { appSettings, I18n } = useContext(GlobalContext);
   const [showHint, setShowHint] = useState(false);
-  const [solution, setSolution] = useState("");
-  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState(appSettings.userName);
   const [solutionSubmitted, setSolutionSubmitted] = useState(false);
   const [fail, setFail] = useState(false);
-  const { appSettings: config, I18n } = useContext(GlobalContext);
 
   const sendSolution = () => {
-    if (solution.trim() === "" || userName.trim() === "") return;
+    let solution = "";
+    if (appSettings.usernameRequired===true) {
+      if (password.trim() === "" || userName.trim() === "") return;
+      solution = `${userName};${password}`;
+    } else {
+      if (password.trim() === "") return;
+      solution = password;
+    }
     setSolutionSubmitted(true);
-    const parsedSolution = config.usernameRequired ? `${userName};${solution}` : solution;
-    solvePuzzle(parsedSolution);
+    solvePuzzle(solution);
   };
 
   useEffect(() => {
     if (!solutionSubmitted) return;
     if (!solved) {
-      setUserName("");
-      setSolution("");
+      if (appSettings.usernameRequired===true){
+        setUserName("");
+      }
+      setPassword("");
       setFail(true);
     }
   }, [solvedTrigger]);
@@ -34,10 +42,10 @@ export default function MainScreen({ solvePuzzle, solved, solvedTrigger }) {
   return (
     <div className="frame">
       <div className="containerLogin">
-        <div className="imgAvatar" style={{ backgroundImage: `url(${config.avatarImg})` }}></div>
+        <div className="imgAvatar" style={{ backgroundImage: `url(${appSettings.avatarImg})` }}></div>
         {!fail ? (
           <>
-            {config.usernameRequired ? (
+            {appSettings.usernameRequired ? (
               <h2 className="userName">
                 <input
                   onChange={(e) => setUserName(e.target.value)}
@@ -46,36 +54,34 @@ export default function MainScreen({ solvePuzzle, solved, solvedTrigger }) {
                   id="user name"
                   type="text"
                   value={userName}
-                  placeholder={config.userName}
+                  placeholder={I18n.getTrans("i.username_placeholder")}
                 ></input>
               </h2>
             ) : (
-              <h2 className="userName">{config.userName}</h2>
+              <h2 className="userName">{appSettings.userName}</h2>
             )}
 
             <div className="input-wrapper">
               <input
-                onChange={(e) => setSolution(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && sendSolution()}
                 className="input"
                 id="password"
                 type="password"
-                value={solution}
-                placeholder={config.passwordPlaceholder}
+                value={password}
+                placeholder={appSettings.passwordPlaceholder}
               />
-
-              {/* Botón de enviar */}
               <button className="send-btn" onClick={() => sendSolution()}>
                 ➜
               </button>
             </div>
-            {config.hint && (
+            {appSettings.hint && (
               <>
-                <p onClick={() => (showHint ? setShowHint(false) : setShowHint(true))} className="forgotPIN">
-                  {I18n.getTrans("i.pass")}
+                <p onClick={() => (showHint ? setShowHint(false) : setShowHint(true))} className="forgotPassword">
+                  {I18n.getTrans("i.forgot_password")}
                 </p>
                 <p className="hint" style={{ visibility: showHint ? "" : "hidden" }}>
-                  {config.hint}
+                  {appSettings.hint}
                 </p>
               </>
             )}
@@ -84,7 +90,7 @@ export default function MainScreen({ solvePuzzle, solved, solvedTrigger }) {
           <>
             <p className="wrongPassFeedback" style={{ marginTop: "3rem" }}>
               {" "}
-              {I18n.getTrans(config.usernameRequired ? "i.wrongUserPass" : "i.wrongPass")}
+              {I18n.getTrans(appSettings.usernameRequired ? "i.wrongUserPass" : "i.wrongPass")}
             </p>
             <button className="ok-button" onClick={() => setFail(false)}>
               {I18n.getTrans("i.ok")}

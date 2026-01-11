@@ -81,7 +81,9 @@ button:focus-visible {
 
 .userName {
   margin-bottom: 2rem;
+  font-size: clamp(20px, 5vmin, 80px);
 }
+
 /*CONTAINER LOGIN*/
 .containerLogin {
   display: flex;
@@ -109,15 +111,16 @@ button:focus-visible {
 }
 
 .input {
-  width: 240px;
-  background-color: #00000071;
+  width: 320px;
+  background-color: #000000;
   color: #e7e7e7;
-  padding: 0.15rem 50px 0.15rem 0.5rem;
+  padding: 0.25rem 50px 0.25rem 0.5rem;
   min-height: 40px;
   border-radius: 4px;
-  border: 1px solid transparent;
+  border: 1px solid #ffffffaa;
   outline: none;
   line-height: 1.15;
+  font-size: clamp(12px, 3.5vmin, 50px);
 }
 
 .input[type="password"] input:focus {
@@ -128,28 +131,29 @@ button:focus-visible {
 /* Botón dentro del input */
 .send-btn {
   width: 50px;
-  padding: 0;
   height: 100%;
+  padding: 0;
   position: absolute;
   right: 0px;
   background: transparent;
+  color: white;
   border: none;
   font-size: 20px;
   cursor: pointer;
   outline: none !important;
 }
 
-/* input:hover {
-  outline: 1px solid lightgrey;
-} */
-
-.forgotPIN {
+.forgotPassword {
   margin-top: 2rem;
   font-size: 0.9rem;
 }
-.forgotPIN:hover {
+.forgotPassword:hover {
   text-decoration: underline;
   cursor: pointer;
+}
+
+p.wrongPassFeedback {
+  font-size: clamp(12px, 3.5vmin, 50px);
 }
 
 /*FOOTER*/
