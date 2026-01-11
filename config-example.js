@@ -8,7 +8,8 @@ export let ESCAPP_APP_SETTINGS = {
   //avatarImg: "/images/avatar.png", //Specify the avatar image URL.
   //backgroundImg: "/images/bg-screen.png", //Background of the login screen.
   //hint: "Enter your PIN to access the system", //Specify a hint message to be displayed when clicking on "I forgot my password".
-  actionAfterSolve: "NONE", //actionAfterSolve can be "NONE", "SHOW_WEB" or "SHOW_VIDEO".
+  actionAfterSolve: "NONE", //actionAfterSolve can be "NONE", "SHOW_MESSAGE", "SHOW_WEB" or "SHOW_VIDEO".
+  //message: "Custom message", //Specify a text to be shown after solving the puzzle when actionAfterSolve is "SHOW_MESSAGE".
   //webURL: "https://iglue.dit.upm.es", //Specify a web URL to be opened after solving the puzzle when actionAfterSolve is "SHOW_WEB".
   //videoURL: "", //Specify a video URL to be played after solving the puzzle when actionAfterSolve is "SHOW_VIDEO".
 

@@ -114,13 +114,13 @@ button:focus-visible {
   width: 320px;
   background-color: #000000;
   color: #e7e7e7;
-  padding: 0.25rem 50px 0.25rem 0.5rem;
+  padding: 0.4rem 50px 0.4rem 0.6rem;
   min-height: 40px;
   border-radius: 4px;
   border: 1px solid #ffffffaa;
   outline: none;
   line-height: 1.15;
-  font-size: clamp(12px, 3.5vmin, 50px);
+  font-size: clamp(12px, 3.3vmin, 50px);
 }
 
 .input[type="password"] input:focus {
@@ -152,8 +152,9 @@ button:focus-visible {
   cursor: pointer;
 }
 
-p.wrongPassFeedback {
+p.feedback {
   font-size: clamp(12px, 3.5vmin, 50px);
+  margin-top: 3rem;
 }
 
 /*FOOTER*/

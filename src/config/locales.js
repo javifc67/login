@@ -7,6 +7,7 @@ export let LOCALES = {
     "i.ok": "Ok",
     "i.wrongPass": "Incorrect password. Please try again.",
     "i.wrongUserPass": "Incorrect username or password. Please try again.",
+    "i.successfulLogin": "Login successful.",
   },
   es: {
     "i.username_placeholder": "Nombre de usuario",
@@ -16,6 +17,7 @@ export let LOCALES = {
     "i.ok": "Ok",
     "i.wrongPass": "La contraseña es incorrecta. Inténtelo de nuevo.",
     "i.wrongUserPass": "Usuario o contraseña incorrectos. Inténtelo de nuevo.",
+    "i.successfulLogin": "Inicio de sesión correcto.",
   },
   sr: {
     "i.username_placeholder": "Korisničko ime",
@@ -25,5 +27,6 @@ export let LOCALES = {
     "i.ok": "U redu",
     "i.wrongPass": "Pogrešna lozinka. Molimo pokušajte ponovo.",
     "i.wrongUserPass": "Pogrešno korisničko ime ili lozinka. Molimo pokušajte ponovo.",
+    "i.successfulLogin": "Uspešna prijava.",
   },
 };

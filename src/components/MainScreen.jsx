@@ -7,43 +7,71 @@ import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { GlobalContext } from "./GlobalContext.jsx";
 
-export default function MainScreen({ solvePuzzle, solved, solvedTrigger }) {
+export default function MainScreen({ solvePuzzle, submitPuzzleSolution, solved, solvedTrigger }) {
   const { appSettings, I18n } = useContext(GlobalContext);
   const [showHint, setShowHint] = useState(false);
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState(appSettings.userName);
-  const [solutionSubmitted, setSolutionSubmitted] = useState(false);
+  const [solution, setSolution] = useState(false);
   const [fail, setFail] = useState(false);
 
   const sendSolution = () => {
-    let solution = "";
+    let currentSolution = "";
     if (appSettings.usernameRequired===true) {
       if (password.trim() === "" || userName.trim() === "") return;
-      solution = `${userName};${password}`;
+      currentSolution = `${userName};${password}`;
     } else {
       if (password.trim() === "") return;
-      solution = password;
+      currentSolution = password;
     }
-    setSolutionSubmitted(true);
-    solvePuzzle(solution);
+    setSolution(currentSolution);
+    solvePuzzle(currentSolution);
   };
 
   useEffect(() => {
-    if (!solutionSubmitted) return;
+    if (solution === false) return;
+    if (solvedTrigger < 1) return;
     if (!solved) {
-      if (appSettings.usernameRequired===true){
-        setUserName("");
-      }
+      // if (appSettings.usernameRequired===true){
+      //   setUserName("");
+      // }
       setPassword("");
       setFail(true);
+      document.getElementById("audio_failure").play(); //Play failure audio
     }
   }, [solvedTrigger]);
 
   return (
     <div className="frame">
+      <audio id="audio_failure" src={appSettings.soundLoginNok} autostart="false" preload="auto" />
+      <audio id="audio_success" src={appSettings.soundLoginOk} autostart="false" preload="auto" />
       <div className="containerLogin">
         <div className="imgAvatar" style={{ backgroundImage: `url(${appSettings.avatarImg})` }}></div>
-        {!fail ? (
+        {fail ? (
+          <>
+            <p className="feedback failureFeedback">
+              {I18n.getTrans(appSettings.usernameRequired ? "i.wrongUserPass" : "i.wrongPass")}
+            </p>
+            <button className="ok-button" onClick={() => setFail(false)}>
+              {I18n.getTrans("i.ok")}
+            </button>
+          </>
+        ) : (solved && appSettings.actionAfterSolve === "SHOW_MESSAGE") ? (
+          <>
+            <p className="feedback successFeedback">
+              {appSettings.message}
+            </p>
+            <button className="ok-button" onClick={() => submitPuzzleSolution(solution)}>
+              {I18n.getTrans("i.ok")}
+            </button>
+          </>
+        ) : (solved && appSettings.actionAfterSolve === "NONE") ? (
+          <>
+            <p className="feedback successFeedback">
+              {I18n.getTrans("i.successfulLogin")}
+            </p>
+          </>
+        ) : (
           <>
             {appSettings.usernameRequired ? (
               <h2 className="userName">
@@ -86,23 +114,21 @@ export default function MainScreen({ solvePuzzle, solved, solvedTrigger }) {
               </>
             )}
           </>
-        ) : (
-          <>
-            <p className="wrongPassFeedback" style={{ marginTop: "3rem" }}>
-              {" "}
-              {I18n.getTrans(appSettings.usernameRequired ? "i.wrongUserPass" : "i.wrongPass")}
-            </p>
-            <button className="ok-button" onClick={() => setFail(false)}>
-              {I18n.getTrans("i.ok")}
-            </button>
-          </>
         )}
       </div>
 
       <div className="footer">
-        <img className="icon" src="./images/wifi-icon.svg"></img>
-        <img className="icon" src="./images/accesibility-icon.svg"></img>
-        <img className="icon" src="./images/power-icon.svg"></img>
+        {appSettings.icons && appSettings.icons.includes("wifi") && (
+          <img className="icon" src="./images/wifi-icon.svg" />
+        )}
+
+        {appSettings.icons && appSettings.icons.includes("accessibility") && (
+          <img className="icon" src="./images/accessibility-icon.svg" />
+        )}
+
+        {appSettings.icons && appSettings.icons.includes("power") && (
+          <img className="icon" src="./images/power-icon.svg" />
+        )}
       </div>
     </div>
   );

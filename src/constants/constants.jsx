@@ -3,7 +3,10 @@ export const DEFAULT_APP_SETTINGS = {
   usernameRequired: "FALSE",
   avatarImg: "/images/avatar.png",
   backgroundImg: "/images/bg-screen.png",
-  actionAfterSolve: "NONE"
+  actionAfterSolve: "NONE",
+  icons: ["power"], //Full list: ["power", "wifi", "accessibility"]
+  soundLoginNok: "sounds/failure_login.mp3",
+  soundLoginOk: "sounds/succesfull_login.mp3",
 };
 
 export const THEMES = {
@@ -16,6 +19,7 @@ export const THEME_ASSETS = {
 
 export const ACTION_AFTER_SOLVE = {
   NONE: "NONE",
+  SHOW_MESSAGE: "SHOW_MESSAGE",
   SHOW_WEB: "SHOW_WEB",
   SHOW_VIDEO: "SHOW_VIDEO"
 }

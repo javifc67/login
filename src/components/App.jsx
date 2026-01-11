@@ -127,6 +127,10 @@ export default function App() {
       _appSettings.passwordPlaceholder = I18n.getTrans("i.password_placeholder");
     }
 
+    if ((typeof _appSettings.message !== "string") || (_appSettings.message.trim()==="")) {
+      _appSettings.message = I18n.getTrans("i.successfulLogin");
+    }
+    
     //Check actions
     if (_appSettings.actionAfterSolve === ACTION_AFTER_SOLVE.SHOW_VIDEO) {
       if (typeof _appSettings.videoURL !== "string") {
@@ -161,6 +165,7 @@ export default function App() {
       Utils.log("Check solution Escapp response", success, erState);
       if (success) {
         setSolved(true);
+        document.getElementById("audio_success").play(); //Play success audio
         if (appSettings.actionAfterSolve === ACTION_AFTER_SOLVE.NONE) {
           submitPuzzleSolution(_solution);
         } else if (appSettings.actionAfterSolve === ACTION_AFTER_SOLVE.SHOW_WEB) {
@@ -215,7 +220,7 @@ export default function App() {
             width: "100%",
           }}
         >
-          <MainScreen solvePuzzle={solvePuzzle} solved={solved} solvedTrigger={solvedTrigger} />
+          <MainScreen solvePuzzle={solvePuzzle} submitPuzzleSolution={submitPuzzleSolution} solved={solved} solvedTrigger={solvedTrigger} />
         </div>
       ),
     },
