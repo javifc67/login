@@ -116,11 +116,11 @@ export default function App() {
     //Init internacionalization module
     I18n.init(_appSettings);
 
-    if (typeof _appSettings.userName !== "string") {
+    if (typeof _appSettings.username !== "string") {
       if(_appSettings.usernameRequired === false){
-        _appSettings.userName = I18n.getTrans("i.username_default");
+        _appSettings.username = I18n.getTrans("i.username_default");
       } else {
-        _appSettings.userName = "";
+        _appSettings.username = "";
       }
     }
     if (typeof _appSettings.passwordPlaceholder !== "string") {

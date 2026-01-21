@@ -11,15 +11,15 @@ export default function MainScreen({ solvePuzzle, submitPuzzleSolution, solved, 
   const { appSettings, I18n } = useContext(GlobalContext);
   const [showHint, setShowHint] = useState(false);
   const [password, setPassword] = useState("");
-  const [userName, setUserName] = useState(appSettings.userName);
+  const [username, setUsername] = useState(appSettings.username);
   const [solution, setSolution] = useState(false);
   const [fail, setFail] = useState(false);
 
   const sendSolution = () => {
     let currentSolution = "";
     if (appSettings.usernameRequired===true) {
-      if (password.trim() === "" || userName.trim() === "") return;
-      currentSolution = `${userName};${password}`;
+      if (password.trim() === "" || username.trim() === "") return;
+      currentSolution = `${username};${password}`;
     } else {
       if (password.trim() === "") return;
       currentSolution = password;
@@ -33,7 +33,7 @@ export default function MainScreen({ solvePuzzle, submitPuzzleSolution, solved, 
     if (solvedTrigger < 1) return;
     if (!solved) {
       // if (appSettings.usernameRequired===true){
-      //   setUserName("");
+      //   setUsername("");
       // }
       setPassword("");
       setFail(true);
@@ -74,20 +74,20 @@ export default function MainScreen({ solvePuzzle, submitPuzzleSolution, solved, 
         ) : (
           <>
             {appSettings.usernameRequired ? (
-              <h2 className="userName">
+              <h2 className="username">
                 <input
-                  onChange={(e) => setUserName(e.target.value)}
+                  onChange={(e) => setUsername(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && sendSolution()}
                   className="input"
                   id="user name"
                   type="text"
-                  value={userName}
+                  value={username}
                   placeholder={I18n.getTrans("i.username_placeholder")}
                   autocomplete="new-username"
                 ></input>
               </h2>
             ) : (
-              <h2 className="userName">{appSettings.userName}</h2>
+              <h2 className="username">{appSettings.username}</h2>
             )}
 
             <div className="input-wrapper">

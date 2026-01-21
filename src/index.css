@@ -79,7 +79,7 @@ button:focus-visible {
   background-position: center;
 }
 
-.userName {
+.username {
   margin-bottom: 2rem;
   font-size: clamp(20px, 5vmin, 80px);
 }

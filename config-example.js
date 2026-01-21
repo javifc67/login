@@ -2,8 +2,8 @@
 
 export let ESCAPP_APP_SETTINGS = {
   //Settings that can be specified by the authors
-  //usernameRequired: "FALSE", //If "TRUE", user can set the user name.
-  //userName: "John Doe", //Specify the user name to be displayed.
+  //usernameRequired: "TRUE", //If "TRUE", user can set the user name.
+  //username: "John Doe", //Specify the user name to be displayed.
   //passwordPlaceholder: "Set your password here", //Specify the password placeholder displayed.
   //avatarImg: "/images/avatar.png", //Specify the avatar image URL.
   //backgroundImg: "/images/bg-screen.png", //Background of the login screen.
